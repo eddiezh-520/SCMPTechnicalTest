@@ -3,6 +3,7 @@ package com.scmp.android.di
 import android.content.Context
 import android.util.Log
 import com.google.gson.GsonBuilder
+import com.scmp.android.util.Constant.HTTPS_URL_APP_PREFIX
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +19,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    val HTTPS_URL_APP_PREFIX = "https://reqres.in/api/"
+
 
     @Singleton
     @Provides
