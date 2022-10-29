@@ -27,14 +27,13 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(
-        context: Context
-    ): Retrofit {
+    fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(HTTPS_URL_APP_PREFIX)
             .client(OkHttpClient.Builder().addInterceptor{
                 it.proceed(it.request()).apply {
                     Log.d("Eddie","test request:${code()}")
+                    Log.d("Eddie","test isSuccessful:$isSuccessful")
                 }
             }.build())
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))

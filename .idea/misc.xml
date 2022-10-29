@@ -6,6 +6,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.24456521739130435" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.2265625" />
         <entry key="app/src/main/res/layout/fragment_staff.xml" value="0.2125" />
+        <entry key="app/src/main/res/layout/staff_info_item.xml" value="0.2375" />
       </map>
     </option>
   </component>

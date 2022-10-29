@@ -3,4 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="token">token</string>
+    <string name="error_password_or_email_not_empty_requirement">email or password can not be empty</string>
+    <string name="error_msg_password_format_requirement">password must have 6~10 characters(only number and letter)</string>
+    <string name="error_msg_email_format_requirement">please input valid email</string>
 </resources>

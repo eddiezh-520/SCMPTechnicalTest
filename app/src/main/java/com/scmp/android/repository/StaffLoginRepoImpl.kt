@@ -1,10 +1,13 @@
 package com.scmp.android.repository
 
-import com.scmp.android.model.LoginToken
-import com.scmp.android.model.StaffList
-import com.scmp.android.model.UserInfo
+
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.scmp.android.model.*
 import com.scmp.android.network.StaffLoginService
-import okhttp3.ResponseBody
+import com.scmp.android.paging.StaffInfoPagingSource
+import kotlinx.coroutines.flow.Flow
 
 class StaffLoginRepoImpl(
     val staffLoginService: StaffLoginService
@@ -14,7 +17,14 @@ class StaffLoginRepoImpl(
         return staffLoginService.login(delay, body)
     }
 
-    override suspend fun getStaffs(page: Int): StaffList {
-        return staffLoginService.getStaffs(page)
+    override fun getStaffs(): Flow<PagingData<StaffInfo>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 1,
+            ),
+            pagingSourceFactory = { StaffInfoPagingSource(staffLoginService) }
+        ).flow
     }
+
+
 }
