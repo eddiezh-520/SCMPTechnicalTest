@@ -67,6 +67,7 @@ class LoginFragment : Fragment() {
                     mBinding.progressBar.visibility = View.GONE
                     Toast.makeText(context, "login success", Toast.LENGTH_SHORT).show()
                     findNavController().navigate(R.id.action_loginFragment_to_staffFragment)
+                    viewModel.loginStatus.postValue(null)
                 }
                 is ApiResult.Error -> {
                     mBinding.progressBar.visibility = View.GONE
