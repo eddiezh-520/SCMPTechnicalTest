@@ -20,3 +20,5 @@ data class StaffInfo(
     @SerializedName("pantone_value")
     val pantoneValue: String
 )
+
+class LoadMore

@@ -7,4 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface StaffLoginRepo {
     suspend fun login(delay: Int?, body: UserInfo): LoginToken
     fun getStaffs(): Flow<PagingData<StaffInfo>>
+    suspend fun getStaffsInfo(page: Int): StaffList
 }

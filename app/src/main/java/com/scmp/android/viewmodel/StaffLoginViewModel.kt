@@ -7,10 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.scmp.android.model.ApiResult
-import com.scmp.android.model.LoginToken
-import com.scmp.android.model.StaffInfo
-import com.scmp.android.model.UserInfo
+import com.scmp.android.adapter.StaffInfoAdapter
+import com.scmp.android.model.*
 import com.scmp.android.repository.StaffLoginRepo
 import com.scmp.android.util.Constant.INVALID_TOKEN
 import com.scmp.android.util.Constant.PASSWORD_OR_ACCOUNT_ERROR
@@ -53,6 +51,11 @@ class StaffLoginViewModel @Inject constructor(
         loginStatus.postValue(ApiResult.Error(PASSWORD_OR_ACCOUNT_ERROR))
     }
 
+    var _staffList = MutableLiveData<StaffList>()
+    val staffList: MutableLiveData<StaffList> = _staffList
+
+    var _loadMoreStaffList = MutableLiveData<StaffList>()
+    val loadMoreStaffList: MutableLiveData<StaffList> = _loadMoreStaffList
 
     fun onEmailChange(email: String) {
         _email.postValue(email)
@@ -69,7 +72,7 @@ class StaffLoginViewModel @Inject constructor(
              * "eve.holt@reqres.in"
              * "cityslicka"
              */
-            val loginMsg = staffLoginRepo.login(5, UserInfo(email = email, password = password))
+            val loginMsg = staffLoginRepo.login(1, UserInfo(email = email, password = password))
             if (loginMsg.isSuccess) {
                     loginMsg.token?.let {
                         if (it == SUCCESS_TOKEN) {
@@ -145,7 +148,37 @@ class StaffLoginViewModel @Inject constructor(
         }
     }
 
-    fun getStaffs(): Flow<PagingData<StaffInfo>> {
-        return staffLoginRepo.getStaffs().cachedIn(viewModelScope)
+//    fun getStaffs(): Flow<PagingData<StaffInfo>> {
+//        return staffLoginRepo.getStaffs().cachedIn(viewModelScope)
+//    }
+
+    fun getStaffs(page: Int) {
+        viewModelScope.launch {
+            val staffList = staffLoginRepo.getStaffsInfo(page)
+            _staffList.postValue(staffList)
+        }
     }
+
+    fun getLoadMoreStaffs(page: Int) {
+        viewModelScope.launch {
+            val staffList = staffLoginRepo.getStaffsInfo(page)
+            _loadMoreStaffList.postValue(staffList)
+        }
+    }
+
+    fun addLoading(mAdapter: StaffInfoAdapter) {
+        var tempList = mutableListOf<Any>()
+        tempList.addAll(mAdapter.currentList)
+        tempList.add(LoadMore())
+        mAdapter.submitList(tempList)
+    }
+
+    fun appendListData(mAdapter: StaffInfoAdapter,staffList: StaffList) {
+        var resultList = mutableListOf<Any>()
+        resultList.addAll(mAdapter.currentList)
+        resultList.removeLast()
+        resultList.addAll(staffList.data)
+        mAdapter.submitList(resultList)
+    }
+
 }

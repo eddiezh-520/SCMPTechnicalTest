@@ -68,6 +68,10 @@ class StaffLoginRepoImpl(
         ).flow
     }
 
+    override suspend fun getStaffsInfo(page: Int): StaffList {
+       return staffLoginService.getStaffs(page)
+    }
+
     class ErrorInfoJsonDeserializer: JsonDeserializer<ErrorInfo> {
         override fun deserialize(
             json: JsonElement,
