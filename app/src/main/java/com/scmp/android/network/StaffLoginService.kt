@@ -12,10 +12,10 @@ import retrofit2.http.Query
 interface StaffLoginService {
 
     @POST("login")
-    suspend fun login(
+    fun login(
         @Query("delay") delay: Int?,
         @Body body: UserInfo
-    ): LoginToken
+    ): Call<LoginToken>
 
 
     @GET("user")

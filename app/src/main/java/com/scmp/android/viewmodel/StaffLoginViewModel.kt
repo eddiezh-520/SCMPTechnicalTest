@@ -18,6 +18,8 @@ import com.scmp.android.util.Constant.PASSWORD_PATTERN
 import com.scmp.android.util.Constant.SUCCESS_TOKEN
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -68,16 +70,20 @@ class StaffLoginViewModel @Inject constructor(
              * "cityslicka"
              */
             val loginMsg = staffLoginRepo.login(5, UserInfo(email = email, password = password))
-            loginMsg.token?.let {
-                if (it == SUCCESS_TOKEN) {
-                    Log.d("Eddie","provide resultToken:$it")
-                    resultToken.postValue(it)
-                    loginStatus.postValue(ApiResult.Success(loginMsg))
-                } else {
-                    loginStatus.postValue(ApiResult.Error(INVALID_TOKEN))
-                }
-            }?: kotlin.run {
-                loginStatus.postValue(ApiResult.Error())
+            if (loginMsg.isSuccess) {
+                    loginMsg.token?.let {
+                        if (it == SUCCESS_TOKEN) {
+                            resultToken.postValue(it)
+                            loginStatus.postValue(ApiResult.Success(loginMsg))
+                        } else {
+                            loginStatus.postValue(ApiResult.Error(INVALID_TOKEN))
+                        }
+                    }?: run {
+                        loginStatus.postValue(ApiResult.Error(INVALID_TOKEN))
+                    }
+            } else {
+
+                loginStatus.postValue(ApiResult.Error(loginMsg.errorMsg))
             }
         }
     }
