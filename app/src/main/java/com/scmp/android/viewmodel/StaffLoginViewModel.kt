@@ -138,7 +138,9 @@ class StaffLoginViewModel @Inject constructor(
 
     private fun checkPasswordIsValid(password: String?): UserInfoChecking {
         password?.let {
-            return if (PASSWORD_PATTERN.toRegex().matches(password)) {
+            return if(it.isEmpty()) {
+                UserInfoChecking.EMAIL_OR_PASSWORD_EMPTY
+            }else if (PASSWORD_PATTERN.toRegex().matches(password)) {
                 UserInfoChecking.PASSWORD_VALID
             } else {
                 UserInfoChecking.PASSWORD_INVALID
