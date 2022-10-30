@@ -72,7 +72,7 @@ class StaffLoginViewModel @Inject constructor(
              * "eve.holt@reqres.in"
              * "cityslicka"
              */
-            val loginMsg = staffLoginRepo.login(1, UserInfo(email = email, password = password))
+            val loginMsg = staffLoginRepo.login(5, UserInfo(email = email, password = password))
             if (loginMsg.isSuccess) {
                     loginMsg.token?.let {
                         if (it == SUCCESS_TOKEN) {
